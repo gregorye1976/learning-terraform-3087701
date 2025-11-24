@@ -23,13 +23,13 @@ resource "aws_instance" "blog" {
   instance_type = var.instance_type
 
   vpc_security_group_ids = [aws_security_group.blog.id]
-  
+
   tags = {
     Name = "HelloWorld"
   }
 }
 
-resouce "aws_security_group" "blog" {
+resource "aws_security_group" "blog" {
   name        = "blog"
   description = "allow http and https in. allow all out"
 
