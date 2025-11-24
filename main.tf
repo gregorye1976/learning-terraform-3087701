@@ -38,7 +38,7 @@ module "autoscaling" {
   version = "9.0.2"
   
   name     = "${var.environment.name}-blog"
-  min_size = var.asg_min_sizemin_size
+  min_size = var.asg_min_size
   max_size = var.asg_max_size
   
   vpc_zone_identifier = module.blog_vpc.public_subnets
@@ -95,7 +95,7 @@ module "blog_alb" {
 module "blog_sg" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "5.3.1"
-  name    = "${ar.environment.name}-blog"
+  name    = "${var.environment.name}-blog"
 
   vpc_id      = module.blog_vpc.vpc_id
 
