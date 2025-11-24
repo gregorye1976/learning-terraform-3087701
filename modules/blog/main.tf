@@ -69,15 +69,14 @@ module "blog_alb" {
   security_groups = [module.blog_sg.security_group_id]
   internal        = false
   
-  target_groups = 
-    {
-      blog_tg = {
+  target_groups = {
+    blog_tg = {
       name_prefix      = "${var.environment.name}-"
       backend_protocol = "HTTP"
       backend_port     = 80
       target_type      = "instance"
-      }
     }
+  }
   
 
   listeners = {
