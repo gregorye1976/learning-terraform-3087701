@@ -25,7 +25,7 @@ module "blog_vpc" {
 
 module "blog_autoscaling" {
   source  = "terraform-aws-modules/autoscaling/aws"
-  version = "7.7.0"  # Updated to a stable version that doesn't use deprecated features
+  version = "~> 8.0"  # Changed to version 8.x
   
   name = "${var.environment.name}-blog"
   
@@ -43,7 +43,7 @@ module "blog_autoscaling" {
 
 module "blog_alb" {
   source  = "terraform-aws-modules/alb/aws"
-  version = "~> 8.0"  # Updated to version 8 for better compatibility
+  version = "~> 8.0"
   
   name = "${var.environment.name}-blog-alb"
   load_balancer_type = "application"
@@ -87,7 +87,7 @@ module "blog_alb" {
 
 module "blog_sg" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "5.3.1"  # Updated to a more recent version
+  version = "5.3.1"
   
   vpc_id  = module.blog_vpc.vpc_id
   name    = "${var.environment.name}-blog"
