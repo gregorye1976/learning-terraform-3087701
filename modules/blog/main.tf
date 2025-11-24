@@ -57,34 +57,37 @@ module "autoscaling" {
 
 module "blog_alb" {
   source  = "terraform-aws-modules/alb/aws"
-  version = "~> 9.0"
+  version = "~> 6.0"
 
-  name               = "${var.environment.name}-blog-alb"
+  name = "blog-alb"
+
   load_balancer_type = "application"
+
   vpc_id             = module.blog_vpc.vpc_id
   subnets            = module.blog_vpc.public_subnets
   security_groups    = [module.blog_sg.security_group_id]
 
-  target_groups = {
-    blog_tg = {
-      name_prefix      = "${var.environment.name}-"
+  target_groups = [
+    {
+      name_prefix      = "blog-"
       backend_protocol = "HTTP"
       backend_port     = 80
       target_type      = "instance"
-      
-      health_check = {
-        enabled             = true
-        healthy_threshold   = 3
-        interval            = 30
-        matcher             = "200"
-        path                = "/"
-        port                = "traffic-port"
-        protocol            = "HTTP"
-        timeout             = 5
-        unhealthy_threshold = 3
-      }
     }
+  ]
+
+  http_tcp_listeners = [
+    {
+      port               = 80
+      protocol           = "HTTP"
+      target_group_index = 0
+    }
+  ]
+
+  tags = {
+    Environment = "dev"
   }
+}
 
   listeners = {
     http = {
