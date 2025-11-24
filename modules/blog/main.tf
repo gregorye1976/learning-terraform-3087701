@@ -25,7 +25,7 @@ module "blog_vpc" {
 
 module "blog_autoscaling" {
   source  = "terraform-aws-modules/autoscaling/aws"
-  version = "~> 8.0"  # Changed to version 8.x
+  version = "~> 8.0"
   
   name = "${var.environment.name}-blog"
   
@@ -43,7 +43,7 @@ module "blog_autoscaling" {
 
 module "blog_alb" {
   source  = "terraform-aws-modules/alb/aws"
-  version = "~> 8.0"
+  version = "~> 10.0"  # Updated to version 10.x which supports AWS provider 6.x
   
   name = "${var.environment.name}-blog-alb"
   load_balancer_type = "application"
@@ -72,13 +72,16 @@ module "blog_alb" {
     }
   ]
   
-  http_tcp_listeners = [
-    {
-      port               = 80
-      protocol           = "HTTP"
-      target_group_index = 0
+  listeners = {
+    http = {
+      port     = 80
+      protocol = "HTTP"
+      
+      forward = {
+        target_group_index = 0
+      }
     }
-  ]
+  }
   
   tags = {
     Environment = var.environment.name
@@ -87,7 +90,7 @@ module "blog_alb" {
 
 module "blog_sg" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "5.3.1"
+  version = "~> 5.0"
   
   vpc_id  = module.blog_vpc.vpc_id
   name    = "${var.environment.name}-blog"
