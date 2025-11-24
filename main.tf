@@ -57,12 +57,12 @@ module "alb" {
   vpc_id            = module_blog_vpc.vpc_id
 
   subnets         = module.blog_vpc.public_subnets
-  security_groups = module.glob_sg.security_group_id
+  security_groups = module.blog_sg.security_group_id
   internal        = false
   
-  target_grouups = [
+  target_groups = [
     {
-      name_prefix      = "blog"
+      name_prefix      = "blog-"
       backend_protocol = "HTTP"
       backend_port     = 80
       target_type      = "instance"
@@ -74,14 +74,6 @@ module "alb" {
       }
     }
   ]
-
-  health_check = {
-    target              = "HTTP:80/"
-    interval            = 30
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
-    timeout             = 5
-  }
 
   http_tcp_listeners = [
     {
