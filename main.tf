@@ -37,7 +37,7 @@ module "autoscaling" {
   source  = "terraform-aws-modules/autoscaling/aws"
   version = "9.0.2"
   
-  name     = "${ar.environment.name}-blog"
+  name     = "${var.environment.name}-blog"
   min_size = var.asg_min_sizemin_size
   max_size = var.asg_max_size
   
@@ -71,7 +71,7 @@ module "blog_alb" {
   
   target_groups = [
     {
-      name_prefix      = "${var.environment.name-}"
+      name_prefix      = "${var.environment.name}-"
       backend_protocol = "HTTP"
       backend_port     = 80
       target_type      = "instance"
